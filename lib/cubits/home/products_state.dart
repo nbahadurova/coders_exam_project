@@ -21,4 +21,7 @@ final class ProductsSuccess extends ProductsState {
   final List<ProductsModel> response;
 }
 
-
+final class ProductsNoProduct extends ProductsState {
+  ProductsNoProduct({required this.message});
+  final String message;
+}

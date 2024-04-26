@@ -12,18 +12,24 @@ class ProductsGridView extends StatelessWidget {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
         if (state is ProductsSuccess) {
-          final List<ProductsModel> products = state.response;
+          final products = state.response;
           return GridView.builder(
+            shrinkWrap: true,
+            primary: false,
             itemCount: products.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+              crossAxisCount: 2,
+              mainAxisExtent: 200,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5,
+            ),
             itemBuilder: (context, index) {
+              final product = products[index];
               return ProductContainer(
-                image: products[index].image!,
-                title: products[index].title!,
-                price: products[index].price!,
+                product: product,
                 onPressed: () {
-                 BlocProvider.of<ProductsCubit>(context).deleteProduct(index);
+                  context.read<ProductsCubit>().deleteProduct(product.id!);
+                  //  BlocProvider.of<ProductsCubit>(context).deleteProduct(index);
                 },
               );
             },

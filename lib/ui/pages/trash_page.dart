@@ -9,30 +9,49 @@ class TrashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ProductsModel> trash =
-                  context.read<ProductsCubit>().trash;
+    final cubit = context.read<ProductsCubit>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Trash page'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 15),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: 
-                 GridView.builder(
-                  itemCount: trash.length,
+      body: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state is ProductsNoProduct) {
+            return Text(state.message);
+          }
+          else if (state is ProductsSuccess) {
+            return Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: cubit.trash.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
+                    crossAxisCount: 2,
+                    mainAxisExtent: 200,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 5,
+                  ),
                   itemBuilder: (context, index) {
+                    final product = cubit.trash[index];
                     return ProductContainer(
-                      image: trash[index].image!,
-                      title: trash[index].title!,
-                      price: trash[index].price!,
+                      product: product,
+                      onPressed: () {
+                        context
+                            .read<ProductsCubit>()
+                            .deleteProductFromTrash(product.id!);
+                      },
                     );
                   },
                 ),
-        ),
+              ),
+            );
+          }
+          return const SizedBox.shrink();
+          
+        },
       ),
     );
   }
