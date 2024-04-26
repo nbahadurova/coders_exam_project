@@ -43,6 +43,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     trash.removeWhere((product) {
       if (product.id == id) {
         products.add(product);
+        products.sort((a,b) => a.id!.compareTo(b.id!));
         return true;
       }
       return false;

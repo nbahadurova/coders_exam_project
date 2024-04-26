@@ -16,10 +16,13 @@ class TrashPage extends StatelessWidget {
       ),
       body: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) {
-          if (state is ProductsNoProduct) {
-            return Text(state.message);
-          }
-          else if (state is ProductsSuccess) {
+          if (cubit.trash.isEmpty) {
+            return const Center(
+                child: Text(
+              'Trash is empty',
+              style: TextStyle(color: Colors.black, fontSize: 30),
+            ));
+          } else if (state is ProductsSuccess) {
             return Padding(
               padding: const EdgeInsets.only(left: 15),
               child: SizedBox(
@@ -50,7 +53,6 @@ class TrashPage extends StatelessWidget {
             );
           }
           return const SizedBox.shrink();
-          
         },
       ),
     );
