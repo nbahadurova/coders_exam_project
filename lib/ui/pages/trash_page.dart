@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:exam_project/utils/helpers/pager.dart';
+import 'package:exam_project/ui/widgets/custom_app_bar.dart';
 import 'package:exam_project/cubits/home/products_cubit.dart';
 import 'package:exam_project/ui/widgets/product_container.dart';
 import 'package:exam_project/data/models/remote/products_model.dart';
@@ -11,9 +13,14 @@ class TrashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<ProductsCubit>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trash page'),
-      ),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(65),
+          child: CustomAppBar(
+            title: 'Trash page',
+            onPressed: () {
+              cubit.trash.clear();
+            },
+          )),
       body: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) {
           if (cubit.trash.isEmpty) {
